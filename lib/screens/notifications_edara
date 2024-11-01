@@ -1,0 +1,352 @@
+import 'package:flutter/material.dart';
+
+class NotificationsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: 'Tajawal',
+      ),
+      home: Scaffold(
+        backgroundColor: const Color(0xFFF5F2E9),
+        appBar: _buildAppBar(),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildHeader(),
+                const SizedBox(height: 10),
+                _buildNotificationList(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      backgroundColor: const Color(0xFFF5F2E9),
+      elevation: 0,
+      centerTitle: true,
+      actions: [
+        PopupMenuButton<int>(
+          icon: const Icon(Icons.more_vert, color: Color(0xFF4B5D3D), size: 30),
+          onSelected: (value) {
+            switch (value) {
+              case 0:
+              // Handle حسابي
+                break;
+              case 1:
+              // Handle إضافة حساب
+                break;
+              case 2:
+              // Handle إعدادات الإشعارات
+                break;
+              case 3:
+              // Handle المساعدة
+                break;
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 0,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  textDirection: TextDirection.rtl,
+                  children: const [
+                    Icon(Icons.person_rounded , color: Color(0xFF4B5D3D)),
+                    SizedBox(width: 10),
+                    Text('حسابي'),
+                  ],
+                ),
+              ),
+            ),
+            PopupMenuItem(
+              value: 1,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  textDirection: TextDirection.rtl,
+                  children: const [
+                    Icon(Icons.add, color: Color(0xFF4B5D3D)),
+                    SizedBox(width: 10),
+                    Text('إضافة حساب'),
+                  ],
+                ),
+              ),
+            ),
+            PopupMenuItem(
+              value: 2,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  textDirection: TextDirection.rtl,
+                  children: const [
+                    Icon(Icons.circle_notifications_rounded, color: Color(0xFF4B5D3D)),
+                    SizedBox(width: 10),
+                    Text('إعدادات الإشعارات'),
+                  ],
+                ),
+              ),
+            ),
+            PopupMenuItem(
+              value: 3,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  textDirection: TextDirection.rtl,
+                  children: const [
+                    Icon(Icons.help_outline, color: Color(0xFF4B5D3D)),
+                    SizedBox(width: 10),
+                    Text('المساعدة'),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+  Widget _buildHeader() {
+    return Column(
+      children: [
+        Center(
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+                child: Image.asset(
+                  'lib/assets/images/logo1.jpg',
+                  height: 90,
+                ),
+              ),
+              const SizedBox(height: 3),
+              const Text(
+                'الإشعارات',
+                style: TextStyle(
+                  color: Color(0xFF4B5D3D),
+                  fontSize: 23,
+                  fontFamily: 'Tajawal',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 5),
+        const Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            'الإشعارات التلقائية',
+            style: TextStyle(
+              color: Color(0xFF4B5D3D),
+              fontSize: 20,
+              fontFamily: 'Tajawal',
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
+
+  Column _buildNotificationList() {
+    return Column(
+      children: [
+        ...List.generate(8, (index) {
+          return NotificationTile(
+            text: _getNotificationText(index),
+            time: _getNotificationTime(index),
+            color: _getNotificationColor(index),
+          );
+        }),
+        const SizedBox(height: 20),
+        _buildCustomNotificationsSection(),
+      ],
+    );
+  }
+
+  Widget _buildCustomNotificationsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Align(alignment: Alignment.centerRight,),
+        const Text(
+          'الإشعارات المخصصة',
+          style: TextStyle(
+            color: Color(0xFF4B5D3D),
+            fontSize: 20,
+            fontFamily: 'Tajawal',
+          ),
+        ),
+        const SizedBox(height: 10),
+        Center(
+          child: IconButton(
+            icon: const Icon(Icons.add_circle_outline, color: Colors.blue, size: 40),
+            onPressed: () {
+              // Add your functionality here for the plus icon
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Color _getNotificationColor(int index) {
+    switch (index % 3) {
+      case 0:
+        return const Color(0xFF5AB783);
+      case 1:
+        return const Color(0xFFFAB65D);
+      default:
+        return const Color(0xFFE57373);
+    }
+  }
+
+  String _getNotificationText(int index) {
+    const List<String> notifications = [
+      'اليوم، لديك موعد مع الأصدقاء.',
+      'تذكر أن تسقي الزهور.',
+      'مراجعة التقرير قبل الاجتماع.',
+      'اجتماع مع العميل في الساعة 3:00 مساءً.',
+      'استعد للعرض التقديمي غداً.',
+      'لا تنسَ شراء الحليب.',
+      'قم بتعيين ورد الحفظ لهذا اليوم!',
+      'استمتع بأمسية هادئة مع كتاب.'
+    ];
+    return notifications[index % notifications.length];
+  }
+
+  String _getNotificationTime(int index) {
+    switch (index) {
+      case 0:
+        return '7:00 am الأحد - الخميس';
+      case 1:
+        return '8:00 am  الأحد - الخميس';
+      case 2:
+        return '9:00 am  الأحد - الخميس';
+      default:
+        return '10:00 am  الأحد - الخميس';
+    }
+  }
+}
+
+class NotificationTile extends StatefulWidget {
+  final String text;
+  final String time;
+  final Color color;
+
+  const NotificationTile({
+    required this.text,
+    required this.time,
+    required this.color,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _NotificationTileState createState() => _NotificationTileState();
+}
+
+class _NotificationTileState extends State<NotificationTile> {
+  bool isSwitched = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          _buildNotificationRow(),
+          _buildTimeText(),
+        ],
+      ),
+    );
+  }
+
+  Row _buildNotificationRow() {
+    return Row(
+      children: [
+        _buildSwitch(),
+        const SizedBox(width: 10),
+        _buildNotificationContainer(),
+      ],
+    );
+  }
+
+  Switch _buildSwitch() {
+    return Switch(
+      value: isSwitched,
+      onChanged: (value) {
+        setState(() {
+          isSwitched = value;
+        });
+      },
+      activeColor: widget.color,         
+      inactiveThumbColor: Colors.white,
+      inactiveTrackColor: Colors.blue,
+    );
+  }
+
+  Expanded _buildNotificationContainer() {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: widget.color,
+          borderRadius: BorderRadius.circular(13),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Icon(Icons.monetization_on_outlined, color: Colors.white),
+            const SizedBox(width: 10),
+            _buildNotificationText(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Expanded _buildNotificationText() {
+    return Expanded(
+      child: Text(
+        widget.text,
+        textAlign: TextAlign.right,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  Padding _buildTimeText() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 48.0),
+      child: Text(
+        widget.time,
+        textAlign: TextAlign.right,
+        style: const TextStyle(
+          color: Color(0xFF4B5D3D),
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+}
